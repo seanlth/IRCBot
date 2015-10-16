@@ -27,8 +27,8 @@ impl IRC {
 
         if let Ok(mut s) = TcpStream::connect( "134.226.83.61:6667" ) {
             println!("connected");
-            let _ = s.write( format!("NICK {}\n\r", nick).as_bytes() );
-            let _ = s.write( format!("USER {} 0 * :{}\n\r", nick, nick).as_bytes() );
+            let _ = s.write( format!("NICK {}\r\n", nick).as_bytes() );
+            let _ = s.write( format!("USER {} 0 * :{}\r\n", nick, nick).as_bytes() );
 
             let _ = s.flush();
 
@@ -50,24 +50,24 @@ impl IRC {
 
     fn nick(&mut self, nick: &str) {
         self.nick = nick.to_string();
-        let _ = self.stream.write( format!("NICK {}\n\r", nick).as_bytes() );
+        let _ = self.stream.write( format!("NICK {}\r\n", nick).as_bytes() );
     }
 
     fn mesg(&mut self, target: &str, message: &str) {
-        let _ = self.stream.write( format!(":source PRIVMSG {} :{}\n\r", target, message).as_bytes() );
+        let _ = self.stream.write( format!(":source PRIVMSG {} :{}\r\n", target, message).as_bytes() );
     }
 
     fn read(&mut self) -> Commands {
 
         let ping = Regex::new(r"^PING :(\w+)\n\r").unwrap();
-        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\n\r").unwrap();
+        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\r\n").unwrap();
 
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
 
-        for c in buf.iter() {
-            println!("{}", c);
-        }
+        // for c in buf.iter() {
+        //     println!("{}", c);
+        // }
 
         let msg = String::from_utf8_lossy( &buf[0..1024] );
 
