@@ -58,8 +58,8 @@ fn main() {
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr300").unwrap();
     loop {
-        irc.join("hairypooter");
-        irc.mesg("#hairypooter", "love these dicks");
+        irc.join("harrypooter");
+        irc.mesg("#harrypooter", "love these dicks");
 
         thread::sleep_ms(50000);
     }
