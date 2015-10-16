@@ -113,8 +113,8 @@ fn main() {
     // }
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
-    irc.join("test");
-    irc.mesg("#test", "test");
+    irc.join("bottest");
+    irc.mesg("#bottest", "test");
     loop {
         let c = irc.read();
         match c {
