@@ -19,7 +19,7 @@ impl IRC {
 
             let _ = s.flush();
 
-            let mut buf = [0; 1024];
+            let mut buf = [0; 4096];
             let r = s.read(&mut buf).unwrap();
             println!("{}", String::from_utf8_lossy( &buf[0..r] ));
 
@@ -67,7 +67,7 @@ fn main() {
     irc.mesg("#test", "test");
     loop {
         irc.read();
-        thread::sleep_ms(50000);
+        //thread::sleep_ms(50000);
     }
 
     // let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
