@@ -112,7 +112,7 @@ fn main() {
     // }
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
-    irc.join("tcd2016");
+    irc.join("bottest");
     loop {
         let c = irc.read();
         match c {
@@ -120,7 +120,7 @@ fn main() {
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
                 if u == "seanlth" { irc.mesg(&*t, "^ cool guy") }
-                else if u == "mereckaj" { irc.mesg(&*t, "^ cunt") }
+                else if u == "mereckaj" { irc.mesg(&*t, "^ prick") }
             },
             Commands::ERR => {}
         }
