@@ -44,6 +44,12 @@ impl IRC {
         let _ = self.stream.write( format!(":source PRIVMSG {} :{}\n\n", target, message).as_bytes() );
     }
 
+    fn read(&mut self) {
+        let mut buf = [0; 1024];
+        let r = self.stream.read(&mut buf).unwrap();
+        println!("{}", String::from_utf8_lossy( &buf[0..r] ));
+    }
+
     fn join(&mut self, channel: &str) {
         let _ = self.stream.write( format!(":source JOIN :#{}\r\n", channel).as_bytes() );
     }
