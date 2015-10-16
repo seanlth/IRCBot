@@ -5,13 +5,15 @@ use std::thread;
 extern crate regex;
 use regex::Regex;
 
+#[allow(dead_code)]
 enum Commands {
-    PING(String),
-    PONG(String),
+    PING(String), // server
+    PONG(String), // server
+    PRIVMSG(String, String, String, String), // nick, user, target, message
     ERR
 }
 
-
+#[allow(dead_code)]
 struct IRC {
     server: String,
     address: String,
@@ -19,6 +21,7 @@ struct IRC {
     stream: TcpStream
 }
 
+#[allow(dead_code)]
 impl IRC {
     fn new(server: &str, address: &str, nick: &str) -> Option<IRC> {
 
@@ -57,6 +60,7 @@ impl IRC {
     fn read(&mut self) -> Commands {
 
         let ping = Regex::new(r"^PING :(\w+)$").unwrap();
+        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)$").unwrap();
 
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
@@ -64,13 +68,19 @@ impl IRC {
         println!("{}", msg);
 
         if let Some( group ) = ping.captures(&*msg)  {
-            if let Some( server ) = group.at(0) {
-                return Commands::PING(server.to_string())
-            }
+            let server = group.at(1).unwrap();
+            return Commands::PING(server.to_string())
+        }
+        else if let Some( group ) = privmsg.captures(&*msg)  {
+            let nick = group.at(1).unwrap();
+            let user = group.at(2).unwrap();
+            let target = group.at(3).unwrap();
+            let message = group.at(4).unwrap();
+
+            return Commands::PRIVMSG(nick.to_string(), user.to_string(), target.to_string(), message.to_string());
         }
 
         return Commands::ERR
-
     }
 
     fn pong(&mut self, server: &str) {
@@ -90,6 +100,16 @@ impl IRC {
 
 fn main() {
 
+    // let msg = format!(":monglth!seanlth@spoon.netsoc.tcd.ie PRIVMSG #test :hey");
+    // let privmsg = Regex::new(r"^:(.+)!.+ PRIVMSG (.+) :(\w+)$").unwrap();
+    //
+    // if let Some( group ) = privmsg.captures(&*msg)  {
+    //     println!("ad");
+    //     if let Some( user ) = group.at(3) {
+    //         println!("{}", user);
+    //     }
+    // }
+
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
     irc.join("test");
     irc.mesg("#test", "test");
@@ -98,43 +118,9 @@ fn main() {
         match c {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
+            Commands::PRIVMSG(n, u, t, m) => { if u == "seanlth" { irc.mesg(&*t, "^cool dude") } },
             Commands::ERR => {}
         }
         //thread::sleep_ms(50000);
     }
-
-    // let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
-    //
-    // let _ = stream.write( format!("NICK bot\r\n").as_bytes() );
-    // let _ = stream.write( format!("USER bot 8 * :bot\r\n").as_bytes() );
-    // let _ = stream.flush();
-
-    //let _ = stream.write( format!("3:source JOIN :#channel\r\n").as_bytes() );
-
-    // let mut g = 1;
-    //     while g > 0 {
-         //let mut buf = [0; 1024];
-    //
-         //let r = stream.read(&mut buf).unwrap();
-    //
-         //println!("{}", String::from_utf8_lossy( &buf[0..r] ));
-    //
-    //     // match buf {
-    //     //   Some(_) => {
-    //     //     if r.clone().unwrap().contains("004")  {
-    //     //       isConnected = true;
-    //     //     } else if r.clone().unwrap().contains("PING") {
-    //     //       println!("PONG.");
-    //     //       stream.write( "PONG\r\n".to_bytes() );
-    //     //       stream.flush();
-    //     //     }
-    //     //
-    //     //   }
-    //     //   None => {
-    //     //     println!("End of Stream!");
-    //     //     g = 0;
-    //     //   }
-    //     // }
-    // }
-    println!("Connection timed out!");
 }
