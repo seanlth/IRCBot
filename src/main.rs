@@ -53,16 +53,16 @@ impl IRC {
 
 fn main() {
 
-    let irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr500");
+    //let irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr500");
 
 
-    // let mut stream = TcpStream::connect("127.0.0.1:6667").unwrap();
-    //
-    // let _ = stream.write( format!("NICK bot\r\n").as_bytes() );
-    // let _ = stream.write( format!("USER bot 8 * :bot\r\n").as_bytes() );
-    // let _ = stream.flush();
-    //
-    // let _ = stream.write( format!(":source JOIN :#channel\r\n").as_bytes() );
+    let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
+
+    let _ = stream.write( format!("NICK bot\r\n").as_bytes() );
+    let _ = stream.write( format!("USER bot 8 * :bot\r\n").as_bytes() );
+    let _ = stream.flush();
+
+    let _ = stream.write( format!(":source JOIN :#channel\r\n").as_bytes() );
 
     // let mut g = 1;
     //     while g > 0 {
