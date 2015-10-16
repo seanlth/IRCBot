@@ -118,8 +118,11 @@ fn main() {
     //     }
     // }
 
+    let chan = std::env::args().nth(1).unwrap();
+
+
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
-    irc.join("bottest");
+    irc.join(&*chan);
     loop {
         let c = irc.read();
 
@@ -129,9 +132,10 @@ fn main() {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
-                if u == "seanlth" && r > 200 { irc.mesg(&*t, "^ cool guy") }
-                else if u == "mereckaj" && r > 200 { irc.mesg(&*t, "^ prick") }
-                else if u == "duggles" && r > 200 { irc.mesg(&*t, "^ cunt lord") }
+                if u == "seanlth" && r > 250 { irc.mesg(&*t, "^ cool guy") }
+                else if u == "mereckaj" && r > 250 { irc.mesg(&*t, "^ prick") }
+                else if u == "duggles" && r > 250 { irc.mesg(&*t, "^ cunt lord") }
+                if m == "!lol" { irc.mesg(&*chan, "lol") }
             },
             Commands::ERR => {}
         }
