@@ -1,5 +1,6 @@
 use std::net::TcpStream;
 use std::io::prelude::*;
+use std::thread;
 
 struct IRC {
     server: String,
@@ -56,7 +57,7 @@ impl IRC {
 fn main() {
 
     let irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "lolbot");
-
+    thread::sleep_ms(100);
 
     // let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
     //
