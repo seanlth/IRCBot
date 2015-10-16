@@ -60,7 +60,7 @@ impl IRC {
     fn read(&mut self) -> Commands {
 
         let ping = Regex::new(r"^PING :(\w+)\r\n").unwrap();
-        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\r\n").unwrap();
+        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(.+)\r\n").unwrap();
 
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
