@@ -1,6 +1,9 @@
+extern crate rand;
+
 use std::net::TcpStream;
 use std::io::prelude::*;
-use std::thread;
+use rand::Rng;
+
 
 extern crate regex;
 use regex::Regex;
@@ -34,7 +37,7 @@ impl IRC {
 
             let mut buf = [0; 4096];
             let r = s.read(&mut buf).unwrap();
-            println!("{}", String::from_utf8_lossy( &buf[0..r] ));
+            //println!("{}", String::from_utf8_lossy( &buf[0..r] ));
 
             return Some(IRC {
                 server: server.to_string(),
@@ -67,7 +70,7 @@ impl IRC {
 
         let msg = String::from_utf8_lossy( &buf[0..r] );
 
-        println!("{}", msg);
+        //println!("{}", msg);
 
         if let Some( group ) = ping.captures(&*msg)  {
             let server = group.at(1).unwrap();
@@ -79,7 +82,7 @@ impl IRC {
             let target = group.at(3).unwrap();
             let message = group.at(4).unwrap();
 
-            println!("{}", user);
+            //println!("{}", user);
 
             return Commands::PRIVMSG(nick.to_string(), user.to_string(), target.to_string(), message.to_string());
         }
@@ -117,16 +120,18 @@ fn main() {
     irc.join("tcd2016");
     loop {
         let c = irc.read();
+
+        let r = rand::random::<u8>();
+
         match c {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
-                if u == "seanlth" { irc.mesg(&*t, "^ cool guy") }
-                else if u == "mereckaj" { irc.mesg(&*t, "^ prick") }
-                else if u == "duggles" { irc.mesg(&*t, "^ cunt lord") }
+                if u == "seanlth" && r > 200 { irc.mesg(&*t, "^ cool guy") }
+                else if u == "mereckaj" && r > 200 { irc.mesg(&*t, "^ prick") }
+                else if u == "duggles" && r > 200 { irc.mesg(&*t, "^ cunt lord") }
             },
             Commands::ERR => {}
         }
-        //thread::sleep_ms(50000);
     }
 }
