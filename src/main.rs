@@ -57,9 +57,9 @@ impl IRC {
 fn main() {
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr300").unwrap();
-    irc.join("netsoc");
     loop {
-        irc.mesg("#tcd2016", "hey-test");
+        irc.join("tcd2016");
+        irc.mesg("#tcd2016", "love these dicks");
         thread::sleep_ms(10000);
     }
 
