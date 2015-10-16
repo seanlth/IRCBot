@@ -2,6 +2,16 @@ use std::net::TcpStream;
 use std::io::prelude::*;
 use std::thread;
 
+extern crate regex;
+use regex::Regex;
+
+enum Commands {
+    PING(String),
+    PONG(String),
+    ERR
+}
+
+
 struct IRC {
     server: String,
     address: String,
@@ -44,10 +54,28 @@ impl IRC {
         let _ = self.stream.write( format!(":source PRIVMSG {} :{}\n\n", target, message).as_bytes() );
     }
 
-    fn read(&mut self) {
+    fn read(&mut self) -> Commands {
+
+        let ping = Regex::new(r"^PING :(\w+)$").unwrap();
+
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
-        println!("{}", String::from_utf8_lossy( &buf[0..r] ));
+        let msg = String::from_utf8_lossy( &buf[0..r] );
+        println!("{}", msg);
+
+        if let Some( group ) = ping.captures(&*msg)  {
+            if let Some( server ) = group.at(0) {
+                return Commands::PING(server.to_string())
+            }
+        }
+
+        return Commands::ERR
+
+    }
+
+    fn pong(&mut self, server: &str) {
+        println!("PONG");
+        let _ = self.stream.write( format!("PING {}\r\n", server).as_bytes() );
     }
 
     fn join(&mut self, channel: &str) {
@@ -62,11 +90,16 @@ impl IRC {
 
 fn main() {
 
-    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "testbot").unwrap();
+    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
     irc.join("test");
     irc.mesg("#test", "test");
     loop {
-        irc.read();
+        let c = irc.read();
+        match c {
+            Commands::PING(server) => irc.pong(&*server),
+            Commands::PONG(_) => {},
+            Commands::ERR => {}
+        }
         //thread::sleep_ms(50000);
     }
 

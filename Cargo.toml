@@ -2,3 +2,7 @@
 name = "bot"
 version = "0.1.0"
 authors = ["hargados <hargados@tcd.ie>"]
+
+
+[dependencies]
+regex = "0.1.41"
