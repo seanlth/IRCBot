@@ -70,7 +70,8 @@ impl IRC {
 
         let msg = String::from_utf8_lossy( &buf[0..r] );
 
-        //println!("{}", msg);
+        println!("{}",         ping.is_match(&*msg));
+
 
         if let Some( group ) = ping.captures(&*msg)  {
             let server = group.at(1).unwrap();
