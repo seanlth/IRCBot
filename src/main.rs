@@ -135,7 +135,12 @@ fn main() {
                 if u == "seanlth" && r > 250 { irc.mesg(&*t, "^ cool guy") }
                 else if u == "mereckaj" && r > 250 { irc.mesg(&*t, "^ prick") }
                 else if u == "duggles" && r > 250 { irc.mesg(&*t, "^ cunt lord") }
-                if m == "~lol" { println!("{}", m); irc.mesg( &*format!("#{}", chan), "lol") }
+
+                let cmd = Regex::new(r"^~(.+)").unwrap();
+                if let Some(group) = cmd.captures(&*m) {
+                    let msg = group.at(1).unwrap();
+                    irc.mesg( &*format!("#{}", chan), msg)
+                }
             },
             Commands::ERR => {}
         }
