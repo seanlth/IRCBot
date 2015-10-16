@@ -27,8 +27,8 @@ impl IRC {
 
         if let Ok(mut s) = TcpStream::connect( "134.226.83.61:6667" ) {
             println!("connected");
-            let _ = s.write( format!("NICK {}\n\n", nick).as_bytes() );
-            let _ = s.write( format!("USER {} 0 * :{}\n\n", nick, nick).as_bytes() );
+            let _ = s.write( format!("NICK {}\n\r", nick).as_bytes() );
+            let _ = s.write( format!("USER {} 0 * :{}\n\r", nick, nick).as_bytes() );
 
             let _ = s.flush();
 
@@ -50,11 +50,11 @@ impl IRC {
 
     fn nick(&mut self, nick: &str) {
         self.nick = nick.to_string();
-        let _ = self.stream.write( format!("NICK {}\n\n", nick).as_bytes() );
+        let _ = self.stream.write( format!("NICK {}\n\r", nick).as_bytes() );
     }
 
     fn mesg(&mut self, target: &str, message: &str) {
-        let _ = self.stream.write( format!(":source PRIVMSG {} :{}\n\n", target, message).as_bytes() );
+        let _ = self.stream.write( format!(":source PRIVMSG {} :{}\n\r", target, message).as_bytes() );
     }
 
     fn read(&mut self) -> Commands {
@@ -65,7 +65,7 @@ impl IRC {
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
         let msg = String::from_utf8_lossy( &buf[0..r] );
-        println!("{}", msg);
+        println!("{} a", msg);
 
         if let Some( group ) = ping.captures(&*msg)  {
             let server = group.at(1).unwrap();
