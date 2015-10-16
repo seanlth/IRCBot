@@ -135,7 +135,7 @@ fn main() {
                 if u == "seanlth" && r > 250 { irc.mesg(&*t, "^ cool guy") }
                 else if u == "mereckaj" && r > 250 { irc.mesg(&*t, "^ prick") }
                 else if u == "duggles" && r > 250 { irc.mesg(&*t, "^ cunt lord") }
-                if m == "!lol" { irc.mesg(&*chan, "lol") }
+                if m == "~lol" { println!("{}", m); irc.mesg(&*chan, "lol") }
             },
             Commands::ERR => {}
         }
