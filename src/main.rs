@@ -77,6 +77,8 @@ impl IRC {
             let target = group.at(3).unwrap();
             let message = group.at(4).unwrap();
 
+            println!("{}", user);
+
             return Commands::PRIVMSG(nick.to_string(), user.to_string(), target.to_string(), message.to_string());
         }
 
