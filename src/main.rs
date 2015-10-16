@@ -11,10 +11,12 @@ struct IRC {
 impl IRC {
     fn new(server: &str, address: &str, nick: &str) -> Option<IRC> {
 
-        if let Ok(mut s) = TcpStream::connect( &*format!("{}:{}", address, ":6667") ) {
+        if let Ok(mut s) = TcpStream::connect( "134.226.83.61:6667" ) {
             println!("connected");
             let _ = s.write( format!("NICK {}\n\n", nick).as_bytes() );
             let _ = s.write( format!("USER {} 0 * :{}\n\n", nick, nick).as_bytes() );
+
+            let _ = s.flush();
 
             let mut buf = [0; 1024];
             let r = s.read(&mut buf).unwrap();
@@ -53,24 +55,24 @@ impl IRC {
 
 fn main() {
 
-    //let irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr500");
+    let irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "lolbot");
 
 
-    let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
-
-    let _ = stream.write( format!("NICK bot\r\n").as_bytes() );
-    let _ = stream.write( format!("USER bot 8 * :bot\r\n").as_bytes() );
-    let _ = stream.flush();
+    // let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
+    //
+    // let _ = stream.write( format!("NICK bot\r\n").as_bytes() );
+    // let _ = stream.write( format!("USER bot 8 * :bot\r\n").as_bytes() );
+    // let _ = stream.flush();
 
     //let _ = stream.write( format!(":source JOIN :#channel\r\n").as_bytes() );
 
     // let mut g = 1;
     //     while g > 0 {
-         let mut buf = [0; 1024];
+         //let mut buf = [0; 1024];
     //
-         let r = stream.read(&mut buf).unwrap();
+         //let r = stream.read(&mut buf).unwrap();
     //
-         println!("{}", String::from_utf8_lossy( &buf[0..r] ));
+         //println!("{}", String::from_utf8_lossy( &buf[0..r] ));
     //
     //     // match buf {
     //     //   Some(_) => {
