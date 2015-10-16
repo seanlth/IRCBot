@@ -65,7 +65,10 @@ impl IRC {
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
         let msg = String::from_utf8_lossy( &buf[0..r] );
-        println!("{} a", msg);
+        println!("{}", msg);
+
+        println!("{}", privmsg.is_match(&*msg));
+
 
         if let Some( group ) = ping.captures(&*msg)  {
             let server = group.at(1).unwrap();
