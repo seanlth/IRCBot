@@ -59,8 +59,8 @@ impl IRC {
 
     fn read(&mut self) -> Commands {
 
-        let ping = Regex::new(r"^PING :(\w+)$").unwrap();
-        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)$").unwrap();
+        let ping = Regex::new(r"^PING :(\w+)\n\r").unwrap();
+        let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\n\r").unwrap();
 
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
@@ -102,12 +102,12 @@ impl IRC {
 
 fn main() {
 
-    // let msg = format!(":monglth!seanlth@spoon.netsoc.tcd.ie PRIVMSG #test :hey");
-    // let privmsg = Regex::new(r"^:(.+)!.+ PRIVMSG (.+) :(\w+)$").unwrap();
+    // let msg = format!(":monglth!seanlth@spoon.netsoc.tcd.ie PRIVMSG #test :hey\n\r");
+    // let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\n\r").unwrap();
     //
     // if let Some( group ) = privmsg.captures(&*msg)  {
     //     println!("ad");
-    //     if let Some( user ) = group.at(3) {
+    //     if let Some( user ) = group.at(2) {
     //         println!("{}", user);
     //     }
     // }
