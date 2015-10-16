@@ -66,6 +66,7 @@ impl IRC {
         let r = self.stream.read(&mut buf).unwrap();
         let msg = String::from_utf8_lossy( &buf[0..r] );
         println!("{}", msg);
+        println!("{}", msg.len());
 
         println!("{}", privmsg.is_match(&*msg));
 
@@ -104,7 +105,6 @@ impl IRC {
 }
 
 fn main() {
-
     // let msg = format!(":monglth!seanlth@spoon.netsoc.tcd.ie PRIVMSG #test :hey\n\r");
     // let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\n\r").unwrap();
     //
