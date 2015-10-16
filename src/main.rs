@@ -62,7 +62,7 @@ impl IRC {
 
     fn read(&mut self) -> Commands {
 
-        let ping = Regex::new(r"^PING :(\w+)\r\n").unwrap();
+        let ping = Regex::new(r"^PING :(.+)\r\n").unwrap();
         let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(.+)\r\n").unwrap();
 
         let mut buf = [0; 1024];
@@ -117,7 +117,7 @@ fn main() {
     // }
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
-    irc.join("tcd2016");
+    irc.join("bottest");
     loop {
         let c = irc.read();
 
