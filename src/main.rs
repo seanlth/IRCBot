@@ -59,25 +59,13 @@ impl IRC {
 
     fn read(&mut self) -> Commands {
 
-        let ping = Regex::new(r"^PING :(\w+)\n\r").unwrap();
+        let ping = Regex::new(r"^PING :(\w+)\r\n").unwrap();
         let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\r\n").unwrap();
 
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
 
-        // for c in buf.iter() {
-        //     println!("{}", c);
-        // }
-
-        let msg = String::from_utf8_lossy( &buf[0..1024] );
-
-
-
-        println!("{}", msg);
-        //println!("{}", msg.len());
-
-        println!("{}", privmsg.is_match(&*msg));
-
+        let msg = String::from_utf8_lossy( &buf[0..r] );
 
         if let Some( group ) = ping.captures(&*msg)  {
             let server = group.at(1).unwrap();
@@ -124,14 +112,16 @@ fn main() {
     // }
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
-    irc.join("bottest");
-    irc.mesg("#bottest", "test");
+    irc.join("tcd2016");
     loop {
         let c = irc.read();
         match c {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
-            Commands::PRIVMSG(n, u, t, m) => { if u == "seanlth" { irc.mesg(&*t, "^cool dude") } },
+            Commands::PRIVMSG(n, u, t, m) => {
+                if u == "seanlth" { irc.mesg(&*t, "^ cool guy") }
+                else if u == "mereckaj" { irc.mesg(&*t, "^ cunt") }
+            },
             Commands::ERR => {}
         }
         //thread::sleep_ms(50000);
