@@ -123,6 +123,7 @@ fn main() {
             Commands::PRIVMSG(n, u, t, m) => {
                 if u == "seanlth" { irc.mesg(&*t, "^ cool guy") }
                 else if u == "mereckaj" { irc.mesg(&*t, "^ prick") }
+                else if u == "duggles" { irc.mesg(&*t, "^ cunt lord") }
             },
             Commands::ERR => {}
         }
