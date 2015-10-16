@@ -12,6 +12,7 @@ impl IRC {
     fn new(server: &str, address: &str, nick: &str) -> Option<IRC> {
 
         if let Ok(mut s) = TcpStream::connect( &*format!("{}:{}", address, ":6667") ) {
+            println!("connected");
             let _ = s.write( format!("NICK {}\n\n", nick).as_bytes() );
             let _ = s.write( format!("USER {} 0 * :{}\n\n", nick, nick).as_bytes() );
 
