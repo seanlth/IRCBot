@@ -64,9 +64,17 @@ impl IRC {
 
         let mut buf = [0; 1024];
         let r = self.stream.read(&mut buf).unwrap();
-        let msg = String::from_utf8_lossy( &buf[0..r] );
+
+        for c in buf.iter() {
+            println!("{}", c);
+        }
+
+        let msg = String::from_utf8_lossy( &buf[0..1024] );
+
+
+
         println!("{}", msg);
-        println!("{}", msg.len());
+        //println!("{}", msg.len());
 
         println!("{}", privmsg.is_match(&*msg));
 
