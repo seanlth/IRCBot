@@ -58,9 +58,10 @@ fn main() {
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr300").unwrap();
     loop {
-        irc.join("tcd2016");
-        irc.mesg("#tcd2016", "love these dicks");
-        thread::sleep_ms(10000);
+        irc.join("hairypooter");
+        irc.mesg("#hairypooter", "love these dicks");
+
+        thread::sleep_ms(50000);
     }
 
     // let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
