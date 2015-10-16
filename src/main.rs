@@ -62,15 +62,15 @@ fn main() {
     let _ = stream.write( format!("USER bot 8 * :bot\r\n").as_bytes() );
     let _ = stream.flush();
 
-    let _ = stream.write( format!(":source JOIN :#channel\r\n").as_bytes() );
+    //let _ = stream.write( format!(":source JOIN :#channel\r\n").as_bytes() );
 
     // let mut g = 1;
     //     while g > 0 {
-    //     let mut buf = [0; 1024];
+         let mut buf = [0; 1024];
     //
-    //     let r = stream.read(&mut buf).unwrap();
+         let r = stream.read(&mut buf).unwrap();
     //
-    //     println!("{}", String::from_utf8_lossy( &buf[0..r] ));
+         println!("{}", String::from_utf8_lossy( &buf[0..r] ));
     //
     //     // match buf {
     //     //   Some(_) => {
