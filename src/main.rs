@@ -56,10 +56,12 @@ impl IRC {
 
 fn main() {
 
-    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "Dcklvr300").unwrap();
+    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "DckLvr300").unwrap();
     irc.join("netsoc");
-    irc.mesg("#netsoc", "hey-test");
-    thread::sleep_ms(10000);
+    loop {
+        irc.mesg("#tcd2016", "hey-test");
+        thread::sleep_ms(10000);
+    }
 
     // let mut stream = TcpStream::connect("134.226.83.61:6667").unwrap();
     //
