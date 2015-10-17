@@ -114,6 +114,7 @@ fn main() {
     let mereckaj = std::env::args().nth(3).unwrap();
     let duggles = std::env::args().nth(4).unwrap();
     let socbot = std::env::args().nth(5).unwrap();
+    let sc = std::env::args().nth(6).unwrap();
 
     let mut message_string = String::new();
 
@@ -129,17 +130,20 @@ fn main() {
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
                 if u == "seanlth" && r > 1 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
-                else if u == "mereckaj" && r > 1 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
-                else if u == "duggles" && r > 1 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
+                else if u == "mereckaj" && r > 250 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
+                else if u == "duggles" && r > 250 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
                 else if u == "socbot" && r > 100 { irc.mesg(&*t, &*format!("^ {}", socbot)) }
+                else if u == "sc" && r > 250 { irc.mesg(&*t, &*format!("^ {}", sc)) }
+
 
                 let cmd = Regex::new(r"^~(.+)").unwrap();
                 if let Some(group) = cmd.captures(&*m) {
+                    println!("here");
                     if t == chan {
                         let msg = group.at(1).unwrap();
                         println!("{}", msg);
                         message_string = message_string + msg;
-                        irc.mesg(&*t, &*format!("#{}", &*message_string));
+                        irc.mesg(&*format!("#{}", chan), &*message_string);
                     }
                 }
             },
