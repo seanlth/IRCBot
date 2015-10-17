@@ -108,18 +108,14 @@ impl IRC {
 }
 
 fn main() {
-    // let msg = format!(":monglth!seanlth@spoon.netsoc.tcd.ie PRIVMSG #test :hey\n\r");
-    // let privmsg = Regex::new(r"^:(.+)!(.+)@.+ PRIVMSG (.+) :(\w+)\n\r").unwrap();
-    //
-    // if let Some( group ) = privmsg.captures(&*msg)  {
-    //     println!("ad");
-    //     if let Some( user ) = group.at(2) {
-    //         println!("{}", user);
-    //     }
-    // }
 
     let chan = std::env::args().nth(1).unwrap();
+    let seanlth = std::env::args().nth(2).unwrap();
+    let mereckaj = std::env::args().nth(3).unwrap();
+    let duggles = std::env::args().nth(4).unwrap();
+    let socbot = std::env::args().nth(5).unwrap();
 
+    let mut message_string = String::new();
 
     let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
     irc.join(&*chan);
@@ -132,14 +128,18 @@ fn main() {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
-                if u == "seanlth" && r > 250 { irc.mesg(&*t, "^ cool guy") }
-                else if u == "mereckaj" && r > 250 { irc.mesg(&*t, "^ prick") }
-                else if u == "duggles" && r > 250 { irc.mesg(&*t, "^ cunt lord") }
+                if u == "seanlth" && r > 250 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
+                else if u == "mereckaj" && r > 250 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
+                else if u == "duggles" && r > 250 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
+                else if u == "socbot" && r > 100 { irc.mesg(&*t, &*format!("^ {}", socbot)) }
 
                 let cmd = Regex::new(r"^~(.+)").unwrap();
                 if let Some(group) = cmd.captures(&*m) {
-                    let msg = group.at(1).unwrap();
-                    irc.mesg( &*format!("#{}", chan), msg)
+                    if t == chan {
+                        let msg = group.at(1).unwrap();
+                        message_string = message_string + msg;
+                        irc.mesg(&*t, &*format!("#{}", &*message_string));
+                    }
                 }
             },
             Commands::ERR => {}
