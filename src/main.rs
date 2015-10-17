@@ -139,6 +139,7 @@ fn main() {
                 let cmd = Regex::new(r"^~(.+)").unwrap();
                 if let Some(group) = cmd.captures(&*m) {
                     println!("here");
+                    println!("{}, {}", t, chan);
                     if t == chan {
                         let msg = group.at(1).unwrap();
                         println!("{}", msg);
