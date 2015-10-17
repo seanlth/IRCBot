@@ -118,7 +118,7 @@ fn main() {
 
     let mut message_string = String::new();
 
-    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "brewbot").unwrap();
+    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "lolbot").unwrap();
     irc.join(&*chan);
     loop {
         let c = irc.read();
