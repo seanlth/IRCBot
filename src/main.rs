@@ -129,7 +129,7 @@ fn main() {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
-                if u == "seanlth" && r > 1 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
+                if u == "seanlth" && r > 200 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
                 else if u == "mereckaj" && r > 250 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
                 else if u == "duggles" && r > 250 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
                 else if u == "socbot" && r > 100 { irc.mesg(&*t, &*format!("^ {}", socbot)) }
