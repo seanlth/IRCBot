@@ -128,15 +128,16 @@ fn main() {
             Commands::PING(server) => irc.pong(&*server),
             Commands::PONG(_) => {},
             Commands::PRIVMSG(n, u, t, m) => {
-                if u == "seanlth" && r > 250 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
-                else if u == "mereckaj" && r > 250 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
-                else if u == "duggles" && r > 250 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
+                if u == "seanlth" && r > 1 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
+                else if u == "mereckaj" && r > 1 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
+                else if u == "duggles" && r > 1 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
                 else if u == "socbot" && r > 100 { irc.mesg(&*t, &*format!("^ {}", socbot)) }
 
                 let cmd = Regex::new(r"^~(.+)").unwrap();
                 if let Some(group) = cmd.captures(&*m) {
                     if t == chan {
                         let msg = group.at(1).unwrap();
+                        println!("{}", msg);
                         message_string = message_string + msg;
                         irc.mesg(&*t, &*format!("#{}", &*message_string));
                     }
