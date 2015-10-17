@@ -140,7 +140,7 @@ fn main() {
                 if let Some(group) = cmd.captures(&*m) {
                     println!("here");
                     println!("{}, {}", t, chan);
-                    if t == chan {
+                    if t == format!("#{}", chan) {
                         let msg = group.at(1).unwrap();
                         println!("{}", msg);
                         message_string = message_string + msg;
