@@ -157,10 +157,10 @@ fn main() {
                     println!("here");
                     println!("{}, {}", t, chan);
                     //if t == format!("#{}", chan) {
-                        let msg = group.at(1).unwrap();
-                        println!("{}", msg);
-                        message_string = message_string + msg;
-                        irc.mesg(&*format!("#{}", chan), &*message_string);
+                        let msg = &randShout(colA,colB,colC);
+                        // println!("{}", msg);
+                        // message_string = message_string + msg;
+                        irc.mesg(&*format!("#{}", chan), msg);
                     //}
                 }
             },
