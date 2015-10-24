@@ -8,6 +8,8 @@ use rand::Rng;
 extern crate regex;
 use regex::Regex;
 
+
+use std::str;
 #[allow(dead_code)]
 enum Commands {
     PING(String), // server
@@ -106,6 +108,13 @@ impl IRC {
     }
 
 }
+fn randShout(colA: &[&'static str],colB: &[&'static str],colC: &[&'static str]) -> String{
+    let randA1 = rand::random::<usize>() % colA.len();
+    let randA2 = rand::random::<usize>() % colA.len();
+    let randB = rand::random::<usize>() % colB.len();
+    let randC = rand::random::<usize>() % colC.len();
+    return format!("{} {} {} {}",colA[randA1],colB[randB],colA[randA2],colC[randC]).to_string();
+}
 
 fn main() {
 
@@ -115,6 +124,13 @@ fn main() {
     let duggles = std::env::args().nth(4).unwrap();
     let socbot = std::env::args().nth(5).unwrap();
     let sc = std::env::args().nth(6).unwrap();
+
+    let colA: &[&'static str] = &["cunt","shit","turd","fuck","ass","douche","ball","testicle","cock","nut","sack",
+        "pussy","piss","cum","ass","bitch","twat","tit","whore","fat","dyke","fag","nazi","queer","queef","monglth","slut","asshole","bastargd","anal"];
+    let colB: &[&'static str] = &["licking","eating","loving","sucking","kissing","worshiping","guzzling","gobbling","chuggling","sniffing","pounding",
+        "riding","grinding","banging","drinking","inhaling","rubbing","busting","squeezing","peddling"];
+    let colC: &[&'static str] = &["waffle","egg","juice","butter","froth","foam","fluff","cheese","dumpling","noodle","nugget","tostada","fritter","cream",
+        "salami","taco","jelly","sausage","meat","jam","pancake","salad","syrup","broth","sandwitch","pizza","soup","souffle","twinkie","bean","tortilla","brocolli","bologna"];
 
     let mut message_string = String::new();
 
@@ -141,14 +157,16 @@ fn main() {
                     println!("here");
                     println!("{}, {}", t, chan);
                     //if t == format!("#{}", chan) {
-                        let msg = group.at(1).unwrap();
-                        println!("{}", msg);
-                        message_string = message_string + msg;
-                        irc.mesg(&*format!("#{}", chan), &*message_string);
+                        let msg = &randShout(colA,colB,colC);
+                        // println!("{}", msg);
+                        // message_string = message_string + msg;
+                        irc.mesg(&*format!("#{}", chan), msg);
                     //}
                 }
             },
             Commands::ERR => {}
         }
     }
+
+
 }
