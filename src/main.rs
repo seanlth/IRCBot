@@ -8,6 +8,8 @@ use rand::Rng;
 extern crate regex;
 use regex::Regex;
 
+
+use std::str;
 #[allow(dead_code)]
 enum Commands {
     PING(String), // server
@@ -106,49 +108,67 @@ impl IRC {
     }
 
 }
+fn randShout(colA: &[&'static str],colB: &[&'static str],colC: &[&'static str]){
+    let randA1 = rand::random::<usize>() % colA.len();
+    let randA2 = rand::random::<usize>() % colA.len();
+    let randB = rand::random::<usize>() % colB.len();
+    let randC = rand::random::<usize>() % colC.len();
+    return format!("{} {} {} {}",colA[randA1],colB[randB],colA[randA2],colC[randC]);
+}
 
 fn main() {
 
-    let chan = std::env::args().nth(1).unwrap();
-    let seanlth = std::env::args().nth(2).unwrap();
-    let mereckaj = std::env::args().nth(3).unwrap();
-    let duggles = std::env::args().nth(4).unwrap();
-    let socbot = std::env::args().nth(5).unwrap();
-    let sc = std::env::args().nth(6).unwrap();
+    // let chan = std::env::args().nth(1).unwrap();
+    // let seanlth = std::env::args().nth(2).unwrap();
+    // let mereckaj = std::env::args().nth(3).unwrap();
+    // let duggles = std::env::args().nth(4).unwrap();
+    // let socbot = std::env::args().nth(5).unwrap();
+    // let sc = std::env::args().nth(6).unwrap();
 
-    let mut message_string = String::new();
+    let colA: &[&'static str] = &["cunt","shit","turd","fuck","ass","douche","ball","testicle","cock","nut","sack",
+        "pussy","piss","cum","ass","bitch","twat","tit","whore","fat","dyke","fag","nazi","queer","queef","monglth","slut","asshole","bastargd","anal"];
+    let colB: &[&'static str] = &["licking","eating","loving","sucking","kissing","worshiping","guzzling","gobbling","chuggling","sniffing","pounding",
+        "riding","grinding","banging","drinking","inhaling","rubbing","busting","squeezing","peddling"];
+    let colC: &[&'static str] = &["waffle","egg","juice","butter","froth","foam","fluff","cheese","dumpling","noodle","nugget","tostada","fritter","cream",
+        "salami","taco","jelly","sausage","meat","jam","pancake","salad","syrup","broth","sandwitch","pizza","soup","souffle","twinkie","bean","tortilla","brocolli","bologna"];
 
-    let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "lolbot").unwrap();
-    irc.join(&*chan);
-    loop {
-        let c = irc.read();
+    println!("{}",randShout(colA));
 
-        let r = rand::random::<u8>();
+    // let mut message_string = String::new();
 
-        match c {
-            Commands::PING(server) => irc.pong(&*server),
-            Commands::PONG(_) => {},
-            Commands::PRIVMSG(n, u, t, m) => {
-                if u == "seanlth" && r > 200 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
-                else if u == "mereckaj" && r > 250 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
-                else if u == "duggles" && r > 250 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
-                else if u == "socbot" && r > 100 { irc.mesg(&*t, &*format!("^ {}", socbot)) }
-                else if u == "sc" && r > 250 { irc.mesg(&*t, &*format!("^ {}", sc)) }
+    // let mut irc = IRC::new("irc.netsoc.tcd.ie", "134.226.83.61", "lolbot").unwrap();
+    // irc.join(&*chan);
+    // loop {
+    //     let c = irc.read();
+
+    //     let r = rand::random::<u8>();
+
+    //     match c {
+    //         Commands::PING(server) => irc.pong(&*server),
+    //         Commands::PONG(_) => {},
+    //         Commands::PRIVMSG(n, u, t, m) => {
+    //             if u == "seanlth" && r > 200 { irc.mesg(&*t, &*format!("^ {}", seanlth)) }
+    //             else if u == "mereckaj" && r > 250 { irc.mesg(&*t, &*format!("^ {}", mereckaj)) }
+    //             else if u == "duggles" && r > 250 { irc.mesg(&*t, &*format!("^ {}", duggles)) }
+    //             else if u == "socbot" && r > 100 { irc.mesg(&*t, &*format!("^ {}", socbot)) }
+    //             else if u == "sc" && r > 250 { irc.mesg(&*t, &*format!("^ {}", sc)) }
 
 
-                let cmd = Regex::new(r"^~(.+)").unwrap();
-                if let Some(group) = cmd.captures(&*m) {
-                    println!("here");
-                    println!("{}, {}", t, chan);
-                    //if t == format!("#{}", chan) {
-                        let msg = group.at(1).unwrap();
-                        println!("{}", msg);
-                        message_string = message_string + msg;
-                        irc.mesg(&*format!("#{}", chan), &*message_string);
-                    //}
-                }
-            },
-            Commands::ERR => {}
-        }
-    }
+    //             let cmd = Regex::new(r"^~(.+)").unwrap();
+    //             if let Some(group) = cmd.captures(&*m) {
+    //                 println!("here");
+    //                 println!("{}, {}", t, chan);
+    //                 //if t == format!("#{}", chan) {
+    //                     let msg = group.at(1).unwrap();
+    //                     println!("{}", msg);
+    //                     message_string = message_string + msg;
+    //                     irc.mesg(&*format!("#{}", chan), &*message_string);
+    //                 //}
+    //             }
+    //         },
+    //         Commands::ERR => {}
+    //     }
+    // }
+
+
 }
